@@ -8,8 +8,15 @@ from sqlmodel import SQLModel
 
 from alembic import context
 
+
 #models
-from app.models.food import *
+from app.models.customer import Customer
+from app.models.food import Food
+from app.models.order import Order
+from app.models.category import Category
+from app.models.orderItem import OrderItem
+from app.models.cart import Cart
+from app.models.cartItem import CartItem
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
