@@ -3,7 +3,7 @@ from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import get_session
-from app.models import Food, FoodCreate
+from app.models.food import Food, FoodCreate
 
 app = FastAPI()
 
