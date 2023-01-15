@@ -1,4 +1,5 @@
 from typing import Optional
+from datetime import datetime
 
 from sqlmodel import SQLModel, Field, Relationship
 from .food import Food
@@ -9,6 +10,10 @@ class CartItemBase(SQLModel):
     food_id: int = Field(default=None, foreign_key="food.id")
     quantity: int
     subtotal: float
+    created_at: datetime = Field(nullable=False,
+        default=datetime.now())
+    updated_at: datetime = Field(nullable=True,
+        default=None)
 
 
 
