@@ -1,23 +1,16 @@
 from typing import Optional
 from datetime import datetime
-from sqlmodel import SQLModel, Field, Relationship, DateTime
-from .category import Category
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float
+from .category import CategoryBase
+from app.db import Base
 
 
-class FoodBase(SQLModel):
-    title: str = Field(nullable=False)
-    description: str
-    category_id: int = Field(nullable=False, foreign_key="category.id")
-    price: float = Field(nullable=False)
-    created_at: datetime = Field(nullable=False,
-        default=datetime.now())
-    updated_at: datetime = Field(nullable=True,
-        default=None)
-
-class Food(FoodBase, table=True):
-    id: int = Field(default=None, primary_key=True)
-    category: Category = Relationship(back_populates="category")
-
-
-class FoodCreate(FoodBase):
-    pass
+class FoodBase(Base):
+    __tablename__ = 'food'
+    id = Column(Integer, primary_key=True)
+    title = Column(String, nullable=False)
+    description = Column(String, nullable=True)
+    category_id = Column(Integer, ForeignKey('category.id'))
+    price = Column(Float, nullable=False)
+    created_at = Column(DateTime, default=datetime.now())
+    updated_at =Column(DateTime, default=None, nullable=True)
