@@ -1,10 +1,8 @@
 from fastapi import APIRouter, Depends, Request
-from app.models.food import FoodBase, Food, ReadAllFoodResponse
+from app.models.food import FoodBase, Food, FoodCreate
 from app.db import get_session
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import AsyncIterator, TYPE_CHECKING
 from sqlalchemy.future import select
-from typing import List
 from sqlalchemy.orm import joinedload, sessionmaker
 from datetime import datetime
 
@@ -28,6 +26,16 @@ async def get_all(session: AsyncSession = Depends(get_session)):
         Food(title=f.title, description=f.description, category_id=f.category_id, price=f.price, category=f.category)
         for f in food
     ]
+
+@router.post("/")
+async def add(food: FoodCreate, session: AsyncSession = Depends(get_session)):
+    food = FoodBase(title=food.title, description=food.description,
+                price=food.price, category_id=food.category_id,
+                created_at=datetime.now(), updated_at=None)
+    session.add(food)
+    await session.commit()
+    await session.refresh(food)
+    return food
 
 
 

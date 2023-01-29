@@ -4,11 +4,8 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float, sel
 from .category import Category
 from pydantic import BaseModel
 from app.db import Base, get_session
-from fastapi import Depends
-from typing import AsyncIterator, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from .food import FoodBase
 class FoodBase(Base):
     __tablename__ = 'food'
     id = Column(Integer, primary_key=True)
@@ -33,3 +30,9 @@ class Food(BaseModel):
 
 class ReadAllFoodResponse(BaseModel):
     food: list[Food]
+
+class FoodCreate(BaseModel):
+    title: str
+    description: str
+    category_id: int
+    price: float
