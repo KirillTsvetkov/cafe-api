@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, Request
-from app.models.food import FoodBase, Food, ReadAllFoodResponse, ReadAllFood
+from app.models.food import FoodBase, Food, ReadAllFoodResponse
 from app.db import get_session
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import AsyncIterator, TYPE_CHECKING
@@ -16,20 +16,18 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
+async def get_all_food(session: AsyncSession) -> list[Food]:
+    result = await session.execute(select(FoodBase).options(joinedload(FoodBase.category, innerjoin=True)))
+    return result.scalars().all()
 
-async def read_all(FoodBase, session: AsyncSession) -> AsyncIterator[FoodBase]:
-    stmt = select(FoodBase).options(joinedload(FoodBase.category, innerjoin=True))
-    stream = await session.stream(stmt.order_by(FoodBase.id))
-    async for row in stream:
-        yield row.FoodBase
 
-@router.get("/", response_model=ReadAllFoodResponse)
-async def read_all(
-    request: Request,
-    use_case: ReadAllFood = Depends(ReadAllFood),
-) -> ReadAllFoodResponse:
-    return ReadAllFoodResponse(notes=[food async for food in use_case.execute()])
-
+@router.get("/", response_model=list[Food])
+async def get_all(session: AsyncSession = Depends(get_session)):
+    food = await get_all_food(session)
+    return [
+        Food(title=f.title, description=f.description, category_id=f.category_id, price=f.price, category=f.category)
+        for f in food
+    ]
 
 
 
