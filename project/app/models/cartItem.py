@@ -1,26 +1,16 @@
 from typing import Optional
 from datetime import datetime
+from app.db import Base
+from .food import FoodBase
+from .cart import CartBase
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float
 
-from sqlmodel import SQLModel, Field, Relationship
-from .food import Food
-from .cart import Cart
-
-class CartItemBase(SQLModel):
-    cart_id: int = Field(default=None, foreign_key="cart.id")
-    food_id: int = Field(default=None, foreign_key="food.id")
-    quantity: int
-    subtotal: float
-    created_at: datetime = Field(nullable=False,
-        default=datetime.now())
-    updated_at: datetime = Field(nullable=True,
-        default=None)
-
-
-
-class CartItem(CartItemBase, table=True):
-    id: int = Field(default=None, primary_key=True)
-    food: Food = Relationship(back_populates="food")
-    cart: Cart = Relationship(back_populates="cart")
-
-class OrderItemCreate(CartItemBase):
-    pass
+class CartItemBase(Base):
+    __tablename__ = "cart_item"
+    id = Column(Integer, primary_key=True)
+    cart_id = Column(Integer, ForeignKey('cart.id'))
+    food_id = Column(Integer, ForeignKey('food.id'))
+    quantity = Column(Integer)
+    subtotal = Column(Float)
+    created_at = Column(DateTime, default=datetime.now())
+    updated_at = Column(DateTime, default=None, nullable=True)

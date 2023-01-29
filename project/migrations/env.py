@@ -4,19 +4,18 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import AsyncEngine
-from sqlmodel import SQLModel
-
+from app.db import Base
 from alembic import context
 
 
 #models
-from app.models.customer import Customer
-from app.models.food import Food
-from app.models.order import Order
-from app.models.category import Category
-from app.models.orderItem import OrderItem
-from app.models.cart import Cart
-from app.models.cartItem import CartItem
+from app.models.customer import CustomerBase
+from app.models.food import FoodBase
+from app.models.order import OrderBase
+from app.models.category import CategoryBase
+from app.models.orderItem import OrderItemBase
+from app.models.cart import CartBase
+from app.models.cartItem import CartItemBase
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
@@ -29,7 +28,7 @@ fileConfig(config.config_file_name)
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = SQLModel.metadata
+target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

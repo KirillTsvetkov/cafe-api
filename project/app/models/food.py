@@ -1,23 +1,38 @@
-from typing import Optional
+from sqlalchemy.orm import sessionmaker, relationship, joinedload
 from datetime import datetime
-from sqlmodel import SQLModel, Field, Relationship, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float, select
 from .category import Category
+from pydantic import BaseModel
+from app.db import Base, get_session
+from typing import TYPE_CHECKING
 
+class FoodBase(Base):
+    __tablename__ = 'food'
+    id = Column(Integer, primary_key=True)
+    title = Column(String, nullable=False)
+    description = Column(String, nullable=True)
+    category_id = Column(Integer, ForeignKey('category.id'))
+    price = Column(Float, nullable=False)
+    category = relationship("CategoryBase",  back_populates="food", lazy=True)
+    created_at = Column(DateTime, default=datetime.now())
+    updated_at =Column(DateTime, default=None, nullable=True)
 
-class FoodBase(SQLModel):
-    title: str = Field(nullable=False)
+class Food(BaseModel):
+    id: int = None
+    title: str = None
     description: str
-    category_id: int = Field(nullable=False, foreign_key="category.id")
-    price: float = Field(nullable=False)
-    created_at: datetime = Field(nullable=False,
-        default=datetime.now())
-    updated_at: datetime = Field(nullable=True,
-        default=None)
-
-class Food(FoodBase, table=True):
-    id: int = Field(default=None, primary_key=True)
-    category: Category = Relationship(back_populates="category")
+    category_id: int
+    price: float
+    category: Category = None
+    class Config:
+        orm_mode = True
 
 
-class FoodCreate(FoodBase):
-    pass
+class ReadAllFoodResponse(BaseModel):
+    food: list[Food]
+
+class FoodCreate(BaseModel):
+    title: str
+    description: str
+    category_id: int
+    price: float
