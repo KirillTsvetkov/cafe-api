@@ -1,10 +1,9 @@
 from datetime import datetime
-
 from pydantic.main import BaseModel
-
 from .customer import CustomerBase, Customer
 from app.db import Base
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float
+
 class CartBase(Base):
     __tablename__ = "cart"
     id = Column(Integer, primary_key=True)

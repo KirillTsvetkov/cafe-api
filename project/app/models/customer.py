@@ -14,3 +14,6 @@ class Customer(BaseModel):
     phone: str
     class Config:
         orm_mode = True
+
+class CustomerCreate(BaseModel):
+    phone: str

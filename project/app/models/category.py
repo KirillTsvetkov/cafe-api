@@ -17,3 +17,6 @@ class Category(BaseModel):
     title: str = None
     class Config:
         orm_mode = True
+
+class CategoryCreate(BaseModel):
+    title: str

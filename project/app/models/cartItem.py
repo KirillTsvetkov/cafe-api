@@ -25,3 +25,9 @@ class CartItem(BaseModel):
     subtotal: float
     class Config:
         orm_mode = True
+
+class CartItemCreate(BaseModel):
+    cart_id: int
+    food_id: int
+    quantity: int
+    subtotal: float

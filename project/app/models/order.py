@@ -26,3 +26,11 @@ class Order(BaseModel):
     customer: Customer
     class Config:
         orm_mode = True
+
+class OrderCreate(BaseModel):
+    customer_id: int
+    code: str
+    date: datetime
+    total: float
+    status: int
+    customer_id: int

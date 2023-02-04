@@ -1,10 +1,9 @@
 from pydantic.main import BaseModel
-
-from .food import FoodBase, Food
-from .order import OrderBase
+from .food import Food
 from datetime import datetime
 from app.db import Base
 from sqlalchemy import Column, Integer, DateTime, Float, ForeignKey
+
 class OrderItemBase(Base):
     __tablename__ = "order_item"
     id = Column(Integer, primary_key=True)
@@ -23,3 +22,9 @@ class OrderItem(BaseModel):
     subtotal: float
     class Config:
         orm_mode = True
+
+class OrderItemCreate(BaseModel):
+    order_id: int
+    food_id: int
+    quantity: int
+    subtotal: float
