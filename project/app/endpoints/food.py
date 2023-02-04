@@ -23,7 +23,8 @@ async def get_all_food(session: AsyncSession) -> list[Food]:
 async def get_all(session: AsyncSession = Depends(get_session)):
     food = await get_all_food(session)
     return [
-        Food(title=f.title, description=f.description, category_id=f.category_id, price=f.price, category=f.category)
+        Food(id=f.id, title=f.title, description=f.description, category_id=f.category_id,
+             price=f.price, category=f.category)
         for f in food
     ]
 

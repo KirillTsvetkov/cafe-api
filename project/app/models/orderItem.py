@@ -1,4 +1,6 @@
-from .food import FoodBase
+from pydantic.main import BaseModel
+
+from .food import FoodBase, Food
 from .order import OrderBase
 from datetime import datetime
 from app.db import Base
@@ -11,4 +13,13 @@ class OrderItemBase(Base):
     quantity = Column(Integer)
     subtotal = Column(Float)
     created_at = Column(DateTime, default=datetime.now())
-    updated_at =Column(DateTime, default=None, nullable=True)
+    updated_at = Column(DateTime, default=None, nullable=True)
+
+class OrderItem(BaseModel):
+    id: int
+    order_id: int
+    food: Food
+    quantity: int
+    subtotal: float
+    class Config:
+        orm_mode = True

@@ -1,7 +1,9 @@
 from typing import Optional
 from datetime import datetime
 from app.db import Base
-from .food import FoodBase
+from pydantic.main import BaseModel
+
+from .food import FoodBase, Food
 from .cart import CartBase
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float
 
@@ -14,3 +16,12 @@ class CartItemBase(Base):
     subtotal = Column(Float)
     created_at = Column(DateTime, default=datetime.now())
     updated_at = Column(DateTime, default=None, nullable=True)
+
+class CartItem(BaseModel):
+    id: int
+    cart_id: int
+    food: Food
+    quantity: int
+    subtotal: float
+    class Config:
+        orm_mode = True

@@ -1,6 +1,11 @@
 from datetime import datetime
 from app.db import Base
+from pydantic.main import BaseModel
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float
+
+from project.app.models.customer import Customer
+
+
 class OrderBase(Base):
     __tablename__ = 'order'
     id = Column(Integer, primary_key=True)
@@ -12,3 +17,12 @@ class OrderBase(Base):
     created_at = Column(DateTime, default=datetime.now())
     updated_at =Column(DateTime, default=None, nullable=True)
 
+class Order(BaseModel):
+    id: int
+    code: str
+    date: datetime
+    total: float
+    status: int
+    customer: Customer
+    class Config:
+        orm_mode = True
