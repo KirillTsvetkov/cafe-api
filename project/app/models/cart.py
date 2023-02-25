@@ -1,6 +1,6 @@
 from datetime import datetime
 from pydantic.main import BaseModel
-from .customer import CustomerBase, Customer
+from .customer import Customer
 from app.db import Base
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float
 

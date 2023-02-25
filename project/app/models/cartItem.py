@@ -1,10 +1,7 @@
-from typing import Optional
 from datetime import datetime
 from app.db import Base
 from pydantic.main import BaseModel
-
-from .food import FoodBase, Food
-from .cart import CartBase
+from .food import Food
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float
 
 class CartItemBase(Base):

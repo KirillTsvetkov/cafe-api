@@ -2,8 +2,7 @@ from datetime import datetime
 from app.db import Base
 from pydantic.main import BaseModel
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float
-
-from project.app.models.customer import Customer
+from .customer import Customer
 
 
 class OrderBase(Base):
